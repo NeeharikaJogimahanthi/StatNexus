@@ -1,0 +1,26 @@
+# StatNexus Official Tech Stack Dependencies
+# Smart India Hackathon 2026 | Problem Statement ID: SIH26101
+
+# Backend & API Framework
+fastapi>=0.110.0
+uvicorn[standard]>=0.28.0
+pydantic>=2.6.0
+python-multipart>=0.0.9
+
+# Database & ORM (MySQL + SQLite Fallback)
+sqlalchemy>=2.0.28
+pymysql>=1.1.0
+cryptography>=42.0.0
+
+# Document & Content Extraction (PDF, PPT, Word, Web)
+python-pptx>=1.0.0      # PowerPoint (.pptx, .ppt) slide & notes parser
+pymupdf>=1.23.26        # PyMuPDF for PDF text & structure extraction
+pypdf>=4.0.0            # PyPDF fallback engine
+beautifulsoup4>=4.12.3  # BeautifulSoup for web & HTML survey circular parsing
+lxml>=5.1.0
+
+# AI, LLM & Analytical Utilities
+requests>=2.31.0
+numpy>=1.26.0
+pandas>=2.2.0
+scikit-learn>=1.4.0
