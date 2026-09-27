@@ -25,7 +25,7 @@ The flagship demo runs **fully client-side** (zero API calls): a single-page Rea
 | 4 | **Detect Skill Gaps** | Gap analysis across the four official competency domains: current mastery vs. 85–90% targets, with gap/status chips (Critical · Moderate · Priority · On Track) |
 | 5 | **Performance Dashboard** | Overall score + readiness verdict, top strengths vs. critical gaps, gap-to-mastery trackers, question-by-question audit with citations, and AI feedback with a recommended course |
 
-**UX / accessibility:** sequential one-step-at-a-time wizard navigation with a locked stepper, real form controls (`<input type="radio">`), keyboard operability and focus rings, ARIA labels/landmarks/skip-link, semantic status colors on a single government-blue accent system, WCAG-friendly typography (≥13px body), and a responsive layout down to 375px.
+**UX / accessibility:** sequential one-step-at-a-time wizard navigation with a locked stepper, real form controls (`<input type="radio">`), keyboard operability and focus rings, ARIA labels/landmarks/skip-link, semantic status colors on a single government-blue accent system, WCAG-friendly typography (13px+ body text; 12.5px reserved for labels/numerals), and a responsive layout down to 375px.
 
 ---
 
