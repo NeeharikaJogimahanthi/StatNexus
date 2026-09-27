@@ -114,7 +114,7 @@
 
 <script type="text/babel" data-presets="react">
 const {
-  useState, useEffect, useMemo, useCallback
+  useState, useEffect, useMemo
 } = React;
 
 /* =====================================================================
@@ -210,7 +210,7 @@ function Stepper({ current, maxVisited, onJump }) {
                 style={isCurrent ? { color: 'var(--primary)' } : {}}
               >
                 <span
-                  className="flex items-center justify-center rounded-full text-xs font-bold"
+                  className="flex items-center justify-center rounded-full text-[12.5px] font-bold"
                   style={{
                     width: 30, height: 30,
                     background: isCurrent ? 'var(--primary)' : done ? 'var(--ok)' : 'var(--bg)',
@@ -601,7 +601,7 @@ function StepAssessment({ quiz, answers, setAnswer, submitted, onSubmit, onSubmi
         </button>
         <p className="text-[13px]" style={{ color: 'var(--faint)' }}>
           {quiz.map((qq, i) => (
-            <button key={qq.id} type="button" onClick={() => setIdx(i)} className={"inline-block w-7 h-7 leading-6 text-center rounded-full text-[12px] font-bold mx-0.5 border " + (i === idx ? 'border-transparent' : '')}
+            <button key={qq.id} type="button" onClick={() => setIdx(i)} className={"inline-block w-7 h-7 leading-6 text-center rounded-full text-[12.5px] font-bold mx-0.5 border " + (i === idx ? 'border-transparent' : '')}
               style={{
                 background: answers[qq.qid] !== undefined ? 'var(--primary)' : '#fff',
                 color: answers[qq.qid] !== undefined ? '#fff' : 'var(--faint)',
@@ -826,10 +826,6 @@ function App() {
     setQuiz(chosen.filter(Boolean));
   }, [domain, tier]);
 
-  const onChangeProfile = (p) => {
-    setProfile(p);
-  };
-
   const handleSignOut = () => {
     setStep(1); setProfile(null); setDomain(null); setTier(null); setEnrolled([]);
     setAnswers({}); setSubmitted(false); setMaxVisited(1); setQuiz(null);
@@ -873,28 +869,27 @@ function App() {
       return { ...comp, scored: finalScored, gap, status };
     });
 
-    const weakest = [...gaps].sort((a, b) => a.scored - b.scored)[0];
-    const recCourse = (DOMAIN_COURSE[weakest.id] || []).map(id => COURSES_CATALOG.find(c => c.id === id)).filter(Boolean)[0];
+    const courseFor = (id) => (DOMAIN_COURSE[id] || []).map(cid => COURSES_CATALOG.find(c => c.id === cid)).filter(Boolean);
+    const byScored = [...gaps].sort((a, b) => a.scored - b.scored);
+    const weakest = byScored[0];
+    const recCourse = courseFor(weakest.id)[0];
 
     const feedback = correct === total
       ? `Outstanding result, ${profile.shortName}. Maintain mastery across ${weakest.name} and mentor colleagues on ${domainLabel}.`
-      : `Focus on ${weakest.name} — ${100 - Math.round(weakest.scored)} pts from mastery. ${recCourse ? `Recommended: ${recCourse.title} (${recCourse.code}).` : 'Revisit core material and re-assess.'} Your strongest area remains ${[...gaps].sort((a, b) => b.scored - a.scored)[0].name}.`;
+      : `Focus on ${weakest.name} — ${100 - Math.round(weakest.scored)} pts from mastery. ${recCourse ? `Recommended: ${recCourse.title} (${recCourse.code}).` : 'Revisit core material and re-assess.'} Your strongest area remains ${byScored[byScored.length - 1].name}.`;
 
     return {
       pct, correct, total, domainLabel, tier,
       strengths: [...correctQs].sort((a, b) => a.topic.localeCompare(b.topic)).slice(0, 5).map(qq => ({ qid: qq.qid, topic: qq.topic, competency: qq.competency })),
       gapList: wrongQs.slice(0, 6).map(qq => ({
         qid: qq.qid, topic: qq.topic, competency: qq.competency,
-        suggestedCourse: (DOMAIN_COURSE[domain] || []).map(id => COURSES_CATALOG.find(c => c.id === id))
-          .find(c => c && c.competencyCovered.toLowerCase().includes((qq.competency || '').toLowerCase().split(' ')[0]))?.code
+        suggestedCourse: courseFor(domain).find(c => c && c.competencyCovered.toLowerCase().includes((qq.competency || '').toLowerCase().split(' ')[0]))?.code
       })),
       tracker: gaps,
       audit: qs.map(qq => ({ qid: qq.qid, question: qq.question, correct: qq.your === qq.correct, your: qq.options[qq.your], right: qq.options[qq.correct], citation: qq.citation })),
       feedback
     };
   }, [quiz, submitted, answers, domain, tier, domainLabel]);
-
-  const gapsView = result ? result.tracker : null;
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -904,7 +899,7 @@ function App() {
         {step === 1 && (
           <StepProfile
             onContinue={(d, t) => { setDomain(d); setTier(t); go(2); }}
-            onProfile={onChangeProfile}
+            onProfile={setProfile}
           />
         )}
         {step === 2 && (
@@ -916,7 +911,7 @@ function App() {
             onSubmit={() => setSubmitted(true)} onSubmitted={() => go(4)} onBack={() => go(2)} />
         )}
         {step === 4 && (
-          <StepGaps gaps={gapsView} domainLabel={domainLabel} onContinue={() => go(5)} onBack={() => go(3)} />
+          <StepGaps gaps={result && result.tracker} domainLabel={domainLabel} onContinue={() => go(5)} onBack={() => go(3)} />
         )}
         {step === 5 && (
           <StepDashboard result={result} profile={profile} domainLabel={domainLabel}
