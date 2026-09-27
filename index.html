@@ -8,16 +8,16 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --ink: #0F172A;
-    --body: #334155;
-    --muted: #475569;
+    --ink: #1B2A4A;
+    --body: #333F55;
+    --muted: #4C5870;
     --faint: #64748B;
-    --line: #E2E8F0;
-    --line-strong: #CBD5E1;
-    --bg: #F8FAFC;
+    --line: #DDD8CD;
+    --line-strong: #C8C2B4;
+    --bg: #F1EEE5;
     --panel: #FFFFFF;
     --primary: #1D4ED8;
     --primary-hover: #1E40AF;
@@ -32,20 +32,27 @@
     --warn: #B45309;
     --warn-soft: #FFFBEB;
     --warn-line: #FDE68A;
-    --r-sm: 10px;
-    --r-md: 14px;
-    --r-lg: 18px;
+    --r-sm: 8px;
+    --r-md: 12px;
+    --r-lg: 16px;
     --shadow-bar: 0 -1px 0 rgba(15, 23, 42, 0.06), 0 -8px 24px -12px rgba(15, 23, 42, 0.10);
+    --shadow-card: 0 1px 2px rgba(27, 42, 74, 0.05), 0 10px 28px -14px rgba(27, 42, 74, 0.12);
     --focus-ring: rgba(29, 78, 216, 0.12);
-    --bar-bg: rgba(255, 255, 255, 0.95);
+    --bar-bg: rgba(241, 238, 229, 0.95);
     --mark-deep: #1E3A8A;
     --mark-mid: #2563EB;
     --mark-accent: #FDE047;
+    --masthead-strong: #FFFFFF;
+    --masthead-muted: rgba(255, 255, 255, 0.72);
+    --masthead-sep: rgba(255, 255, 255, 0.35);
+    --masthead-line: rgba(255, 255, 255, 0.28);
     --ease-out: cubic-bezier(0.2, 0, 0, 1);
+    --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    --font-display: "IBM Plex Serif", Georgia, "Times New Roman", serif;
   }
   html { scroll-behavior: smooth; }
   body {
-    font-family: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    font-family: var(--font-sans);
     background: var(--bg);
     color: var(--body);
     font-size: 16px;
@@ -79,7 +86,9 @@
   .card {
     background: var(--panel); border: 1px solid var(--line);
     border-radius: var(--r-md); padding: 22px 24px;
+    box-shadow: var(--shadow-card);
   }
+  .card h2 { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.005em; }
   .opt {
     display: flex; align-items: flex-start; gap: 12px; width: 100%;
     padding: 14px 16px; border-radius: var(--r-sm);
@@ -97,10 +106,10 @@
   .step-in { animation: stepIn .22s ease both; }
   @keyframes stepIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
   .bar { height: 10px; border-radius: 999px; background: var(--line); overflow: hidden; }
-  .bar > span { display: block; height: 100%; border-radius: 999px; transition: width .5s ease; }
+  .bar > span { display: block; height: 100%; border-radius: 999px; transition: width .5s var(--ease-out); }
   .chip { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px; font-size: 12.5px; font-weight: 600; }
   .ph { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
-  a.skip { position: absolute; left: -9999px; top: 0; background: var(--primary); color: var(--panel); padding: 10px 16px; border-radius: 0 0 10px 0; z-index: 60; }
+  a.skip { position: absolute; left: -9999px; top: 0; background: var(--primary); color: var(--panel); padding: 10px 16px; border-radius: 0 0 var(--r-sm) 0; z-index: 60; }
   a.skip:focus { left: 0; }
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
@@ -241,21 +250,21 @@ function Stepper({ current, maxVisited, onJump }) {
 /* ---------- header ---------- */
 function Header({ profile, onSignOut }) {
   return (
-    <header className="border-b" style={{ background: 'var(--panel)', borderColor: 'var(--line)' }}>
+    <header style={{ background: 'var(--ink)', borderBottom: '3px solid var(--mark-accent)' }}>
       <div className="mx-auto max-w-4xl px-4 sm:px-6 py-3 flex items-center gap-3 flex-wrap">
-        <KarmayogiMark/>
+        <span className="flex items-center justify-center shrink-0 p-[2px]" style={{ border: '1px solid var(--masthead-line)', borderRadius: 'var(--r-sm)' }}><KarmayogiMark/></span>
         <div className="min-w-0">
-          <p className="font-extrabold tracking-tight" style={{ color: 'var(--ink)', fontSize: 16, lineHeight: 1.2 }}>
-            StatNexus <span style={{ color: 'var(--faint)' }}>|</span> <span style={{ color: 'var(--primary)' }}>Karmayogi AI</span>
+          <p className="font-extrabold tracking-tight" style={{ color: 'var(--masthead-strong)', fontSize: 16, lineHeight: 1.2 }}>
+            StatNexus <span style={{ color: 'var(--masthead-sep)' }}>|</span> <span style={{ color: 'var(--mark-accent)' }}>Karmayogi AI</span>
           </p>
-          <p className="text-[12.5px] font-medium truncate" style={{ color: 'var(--muted)', lineHeight: 1.3 }}>
+          <p className="text-[12.5px] font-medium truncate" style={{ color: 'var(--masthead-muted)', lineHeight: 1.3 }}>
             MoSPI Capacity Building Engine · Govt. of India
           </p>
         </div>
         <div className="ml-auto flex items-center gap-2">
           {profile && (
             <div className="flex items-center gap-2 rounded-full border pl-1 pr-3 py-1" style={{ borderColor: 'var(--line)', background: 'var(--panel)' }} title={profile.email}>
-              <span className="flex items-center justify-center rounded-full text-[11.5px] font-bold text-white" style={{ width: 28, height: 28, background: 'var(--primary)' }} aria-hidden="true">
+              <span className="flex items-center justify-center rounded-full text-[11.5px] font-bold" style={{ width: 28, height: 28, background: 'var(--primary)', color: 'var(--panel)' }} aria-hidden="true">
                 {profile.initials}
               </span>
               <span className="text-[13px] font-semibold max-w-[160px] truncate" style={{ color: 'var(--body)' }}>
@@ -267,7 +276,7 @@ function Header({ profile, onSignOut }) {
             </div>
           )}
           {!profile && (
-            <span className="text-[13px] font-semibold px-3 py-1.5 rounded-full border" style={{ color: 'var(--muted)', borderColor: 'var(--line)' }}>
+            <span className="text-[13px] font-semibold px-3 py-1.5 rounded-full border" style={{ color: 'var(--masthead-muted)', borderColor: 'var(--masthead-line)' }}>
               Not signed in
             </span>
           )}
@@ -282,8 +291,8 @@ function StepShell({ eyebrow, title, body, children, nav }) {
   return (
     <div className="mx-auto max-w-3xl px-4 sm:px-6 py-8 sm:py-10" id="main" tabIndex="-1" style={{ outline: 'none' }}>
       <div className="step-in">
-        <p className="text-[12.5px] font-bold uppercase tracking-wider mb-2" style={{ color: 'var(--primary)' }}>{eyebrow}</p>
-        <h1 className="font-extrabold tracking-tight mb-1.5" style={{ color: 'var(--ink)', fontSize: 26, lineHeight: 1.2 }}>{title}</h1>
+        <p className="text-[12.5px] font-bold uppercase tracking-wider mb-2 pl-2.5" style={{ color: 'var(--ink)', borderLeft: '3px solid var(--mark-accent)' }}>{eyebrow}</p>
+        <h1 className="font-bold mb-1.5" style={{ color: 'var(--ink)', fontSize: 26, lineHeight: 1.25, fontFamily: 'var(--font-display)', letterSpacing: '-0.01em' }}>{title}</h1>
         {body && <p className="text-[15px] mb-6" style={{ color: 'var(--muted)', maxWidth: '62ch' }}>{body}</p>}
       </div>
       {children}
@@ -552,7 +561,7 @@ function StepAssessment({ quiz, answers, setAnswer, submitted, onSubmit, onSubmi
           <div className="mx-auto flex items-center justify-center rounded-full mb-4" style={{ width: 56, height: 56, background: 'var(--ok-soft)', color: 'var(--ok)' }}>
             <Icon.Clipboard s={26}/>
           </div>
-          <p className="font-extrabold text-[20px]" style={{ color: 'var(--ink)' }}>All {quiz.length} questions answered</p>
+          <p className="font-bold text-[20px]" style={{ color: 'var(--ink)', fontFamily: 'var(--font-display)', letterSpacing: '-0.01em' }}>All {quiz.length} questions answered</p>
           <p className="text-[14px] mt-1 mb-6" style={{ color: 'var(--muted)' }}>Accuracy is being mapped to your competency domains.</p>
         </div>
       </StepShell>
@@ -696,12 +705,12 @@ function StepDashboard({ result, profile, domainLabel, onRestart }) {
       <div className="grid sm:grid-cols-3 gap-3.5 mb-5">
         <div className="card text-center" role="group" aria-label="Overall score">
           <p className="text-[12.5px] font-bold uppercase tracking-wide mb-1" style={{ color: 'var(--faint)' }}>Overall Score</p>
-          <p className="font-extrabold" style={{ color: 'var(--ink)', fontSize: 34, lineHeight: 1.1 }}>{result.pct}<span className="text-[18px]" style={{ color: 'var(--faint)' }}>%</span></p>
+          <p className="font-bold" style={{ color: 'var(--ink)', fontSize: 34, lineHeight: 1.15, fontFamily: 'var(--font-display)', letterSpacing: '-0.01em' }}>{result.pct}<span className="text-[18px]" style={{ color: 'var(--faint)' }}>%</span></p>
           <div className="bar mt-2"><span style={{ width: `${result.pct}%`, background: tone }}/></div>
         </div>
         <div className="card" role="group" aria-label="Readiness verdict">
           <p className="text-[12.5px] font-bold uppercase tracking-wide mb-1" style={{ color: 'var(--faint)' }}>Readiness Verdict</p>
-          <p className="font-extrabold text-[20px] leading-snug" style={{ color: tone }}>{v.label}</p>
+          <p className="font-bold text-[20px] leading-snug" style={{ color: tone, fontFamily: 'var(--font-display)', letterSpacing: '-0.01em' }}>{v.label}</p>
           <p className="text-[13px] mt-1" style={{ color: 'var(--muted)' }}>{result.correct} of {result.total} questions correct</p>
         </div>
         <div className="card" role="group" aria-label="Assessment details">
@@ -919,8 +928,8 @@ function App() {
             onRestart={() => { handleSignOut(); }} />
         )}
       </main>
-      <footer className="border-t py-4" style={{ borderColor: 'var(--line)', background: 'var(--panel)' }}>
-        <p className="text-center text-[12.5px] font-medium px-4" style={{ color: 'var(--faint)' }}>
+      <footer className="py-4" style={{ background: 'var(--ink)' }}>
+        <p className="text-center text-[12.5px] font-medium px-4" style={{ color: 'var(--masthead-muted)' }}>
           StatNexus: Karmayogi AI — MoSPI Data Informatics &amp; Innovation Division (DIID) · Problem Statement 26101 · Prototype for demonstration
         </p>
       </footer>
