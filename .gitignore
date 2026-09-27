@@ -6,3 +6,7 @@ __pycache__/
 # Test artifacts
 .playwright-mcp/
 verify-*.png
+# Local agent tooling (ECC + skills CLI installs)
+.claude/
+.agents/
+skills-lock.json
